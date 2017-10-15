@@ -42,21 +42,23 @@ void MainWindow::on_Start_clicked()
     genPoisson(count, lambda);
     
     //starting processor
-    RR *PU1 = new RR(mu,lambda);
-    double b[1];
-    double iter = 0.0001;
-    for(int i = 0; i < 1; ++i, iter /= 2.0)
-    {
-        PU1->tau = iter;
-        PU1->Start(inVec,poisson);
+    ProcessingUnit *PU1 = new FIFO(mu,lambda);
+    ProcessingUnit *PU2 = new SF(mu,lambda);
+    ProcessingUnit *PU3 = new RR(mu,lambda);
+    double b;
+    PU3->tau = 0.0001;
+    PU1->Start(inVec,poisson);
+    PU2->Start(inVec,poisson);
+    PU3->Start(inVec,poisson);
 
 
-        b[i] = PU1->getMx();
+    b = PU1->getMx();
+    double b2 = PU2->getMx();
+    double b3 = PU3->getMx();
 
-        //double dd1 = PU1->getDx();
-    }
+    //double dd1 = PU1->getDx();
 
-    ui->Results->showMessage(QString::number(b[1]), 0);
+    ui->Results->showMessage(QString::number(b), 0);
     //delete PU;
 }
 

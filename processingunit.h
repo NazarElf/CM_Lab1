@@ -11,6 +11,7 @@ struct task
 class ProcessingUnit
 {
 public:
+    double tau = 0.001;
     virtual void Start(const std::vector<double> &taskLength, const std::vector<double> &taskWaitTime) = 0;
     void setMu(double mu);
     double getMu();
