@@ -9,7 +9,7 @@ class SF : public ProcessingUnit
 {
 public:
     SF(double mu, double lambda);
-    void Start(const std::vector<double> &taskLength, const std::vector<double> &taskWaitTime) override;
+    void Start(const std::vector<double> &taskLength, const std::vector<double> &taskWaitTime, double unusualTime, int uniqNum) override;
 	std::multiset<task> queue;
 };
 

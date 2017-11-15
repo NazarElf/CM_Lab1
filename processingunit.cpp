@@ -20,15 +20,15 @@ double ProcessingUnit::getLambda()
 void ProcessingUnit::countMx_Dx()
 {
     mx = 0;
-    for(auto val: this->fullTaskTime)
+    for(task val: this->fullTaskTime)
     {
-        mx += val;
+        mx += val.tIn;
     }
     mx /= fullTaskTime.size();
     Dx = 0;
-    for(auto val: this->fullTaskTime)
+    for(task val: this->fullTaskTime)
     {
-        Dx += (mx - val) * (mx - val);
+        Dx += (mx - val.tIn) * (mx - val.tIn);
     }
     Dx /= fullTaskTime.size();
 }
@@ -39,6 +39,43 @@ double ProcessingUnit::getMx()
 double ProcessingUnit::getDx()
 {
     return Dx;
+}
+
+void ProcessingUnit::countUniqMxDx(int uniqNum)
+{
+    uniqMx = 0;
+    for(task val: this->fullTaskTime)
+    {
+        if(val.time)
+            uniqMx += val.tIn;
+    }
+    uniqMx /= (fullTaskTime.size() / uniqNum);
+    uniqDx = 0;
+    for(task val: this->fullTaskTime)
+    {
+        if(val.time)
+            uniqDx += (uniqMx - val.tIn) * (uniqMx - val.tIn);
+    }
+    uniqDx /= (fullTaskTime.size() / uniqNum);
+}
+
+double ProcessingUnit::getUniqMx()
+{
+    return uniqMx;
+}
+double ProcessingUnit::getUniqDx()
+{
+    return uniqDx;
+}
+
+double ProcessingUnit::countReactTime()
+{
+    double a = 0;
+    for(auto val: this->reactTime)
+    {
+        a += val;
+    }
+    return a/=reactTime.size();
 }
 
 ProcessingUnit::~ProcessingUnit()
